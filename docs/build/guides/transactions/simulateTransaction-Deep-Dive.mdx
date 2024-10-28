@@ -5,7 +5,7 @@ description: simulateTransaction examples and tutorials guide
 
 ## Overview
 
-The `simulateTransaction` endpoint in Soroban RPC allows you to submit a trial contract invocation to simulate how it would be executed by the Stellar network. This simulation calculates the effective transaction data, required authorizations, and minimal resource fee. It provides a way to test and analyze the potential outcomes of a transaction without actually submitting it to the network. It can be a nice way to get contract data as well sometimes.
+The `simulateTransaction` endpoint in Stellar RPC allows you to submit a trial contract invocation to simulate how it would be executed by the Stellar network. This simulation calculates the effective transaction data, required authorizations, and minimal resource fee. It provides a way to test and analyze the potential outcomes of a transaction without actually submitting it to the network. It can be a nice way to get contract data as well sometimes.
 
 While calling the method on the rpc server is not the ONLY way to simulate a transaction, it will likely be the most common and easiest way.
 
@@ -411,8 +411,8 @@ These functions are defined in the [`rs-soroban-env`](https://github.com/stellar
 
 For more information and examples, check out the code and other documentation:
 
-- [openRpc Documentation](https://developers.stellar.org/network/soroban-rpc/api-reference/methods/simulateTransaction)
+- [openRpc Documentation](https://developers.stellar.org/network/stellar-rpc/api-reference/methods/simulateTransaction)
 - [openRpc json Specification](https://github.com/stellar/stellar-docs/blob/main/static/openrpc.json)
-- [preflight.go](https://github.com/stellar/soroban-rpc/blob/release/v21.0.0/cmd/soroban-rpc/internal/preflight/preflight.go)
+- [preflight.go](https://github.com/stellar/stellar-rpc/blob/release/v21.0.0/cmd/stellar-rpc/internal/preflight/preflight.go)
 - [Soroban Example Code](https://github.com/stellar/soroban-examples)
 - [Stellar SDK Documentation](https://stellar.github.io/js-stellar-sdk/)
