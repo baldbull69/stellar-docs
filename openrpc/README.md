@@ -37,7 +37,7 @@ If you're here to add a new method to one of the specfiles, you'll want to:
 
    import { RpcMethod } from "@site/src/components/RpcMethod";
    // this specfile for stellar-rpc
-   import rpcSpec from "@site/static/stellar-rpc.openrpc.json";
+   import rpcSpec from "@site/static/soroban-rpc.openrpc.json";
    // this specfile for anchor-platform
    // import rpcSpec from "../anchor-platform.openrpc.json";
 
@@ -60,7 +60,7 @@ Server component of the Anchor Platform.
 ### Building
 
 > _Note:_ The build process will provide output files at
-> `/static/stellar-rpc.openrpc.json` and
+> `/static/soroban-rpc.openrpc.json` and
 > `/platforms/anchor-platform/api-reference/rpc/anchor-platform.openrpc.json`.
 > These files _should_ be included in any commits. However, this build process
 > is re-run as part of our Docusaurus deployment. So, it's necessary to update
@@ -76,7 +76,7 @@ yarn rpcspec:build
 # Build successful.
 ```
 
-This will output the files to `/static/stellar-rpc.openrpc.json` and
+This will output the files to `/static/soroban-rpc.openrpc.json` and
 `/platforms/anchor-platform/api-reference/rpc/anchor-platform.openrpc.json`.
 These files will have all schema `$ref`s resolved.
 

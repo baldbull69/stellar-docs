@@ -27,7 +27,7 @@ The Quickstart image with the RPC service can run on a standard laptop with 8GB 
 - [Friendbot server] - HTTP API for creating and funding new accounts on test networks.
 
 [Stellar Core]: https://github.com/stellar/stellar-core
-[Stellar RPC]: https://github.com/stellar/stellar-rpc/tree/main/cmd/stellar-rpc
+[Stellar RPC]: https://github.com/stellar/soroban-rpc/tree/main/cmd/soroban-rpc
 [Horizon server]: https://github.com/stellar/go/tree/master/services/horizon
 [Friendbot server]: https://github.com/stellar/go/tree/master/services/friendbot
 
@@ -150,7 +150,7 @@ Now you can replace `--network standalone` with `--network futurenet` (or whatev
 We recommend the following ways to deploy your own RPC instance:
 
 1. Deploy to Kubernetes using [Helm](https://helm.sh/docs/intro/install/)
-2. Run the [stellar-rpc docker image](https://hub.docker.com/r/stellar/stellar-rpc) directly
+2. Run the [stellar-rpc docker image](https://hub.docker.com/r/stellar/soroban-rpc) directly
 
 ### Hardware Requirements
 
@@ -179,10 +179,10 @@ helm repo add stellar https://helm.stellar.org/charts
 helm repo update stellar
 ```
 
-3. Deploy the RPC instance to Kubernetes using [our Helm chart](https://github.com/stellar/helm-charts/blob/main/charts/stellar-rpc):
+3. Deploy the RPC instance to Kubernetes using [our Helm chart](https://github.com/stellar/helm-charts/blob/main/charts/soroban-rpc):
 
 ```bash
-helm install my-rpc stellar/stellar-rpc \
+helm install my-rpc stellar/soroban-rpc \
 --namespace my-rpc-namespace-on-cluster \
 --set global.image.sorobanRpc.tag=20.0.0-rc4-40 \
 --set sorobanRpc.ingress.host=myrpc.example.org \
@@ -194,7 +194,7 @@ helm install my-rpc stellar/stellar-rpc \
 
 This example of Helm chart usage highlights some key aspects:
 
-- Set the `global.image.sorobanRpc.tag` to a tag from the [stellar-rpc dockerhub repo](https://hub.docker.com/r/stellar/stellar-rpc) for the image version you want to run. Refer to [the software versions page](/docs/networks/software-versions) to find the correct tag for the Soroban release you are running.
+- Set the `global.image.sorobanRpc.tag` to a tag from the [stellar-rpc dockerhub repo](https://hub.docker.com/r/stellar/soroban-rpc) for the image version you want to run. Refer to [the software versions page](/docs/networks/software-versions) to find the correct tag for the Soroban release you are running.
 
 - The RPC server stores a revolving window of recent data from network ledgers to disk. The size of that data varies depending on the network and its transaction volumes, but it has an estimated range between 10 to 100 MB. To ensure the RPC pod has consistent access to disk storage space and read/write throughput, this example demonstrates how to optionally enable the Helm chart deployment to use a `PersistentVolumeClaim` (PVC) of 100MB from `default` storage class on Kubernetes by enabling these persistence parameters:
 
@@ -205,13 +205,13 @@ This example of Helm chart usage highlights some key aspects:
 
 By default, this is disabled (`sorobanRpc.persistence.enabled=false`) and the RPC deployment will use ephemeral pod storage via `emptyDir`, which will likely be adequate for `futurenet` and `testnet` transaction volumes. However, it's worth highlighting the trade-off of not having storage limitations of the cluster enforced (likely below 100MB).
 
-- Network presets are defined in [`values.yaml`](https://github.com/stellar/helm-charts/blob/main/charts/stellar-rpc/values.yaml), which currently sets network configuration specific to `futurenet`. You can override this default and use other "canned" `values.yaml` files which have been published for other networks. For example, there is a [`values-testnet.yaml`](https://github.com/stellar/helm-charts/blob/main/charts/stellar-rpc/values-testnet.yaml) file to configure the deployment of the RPC server with the `testnet` network. Include this `--values` parameter in your `helm install` to specify the desired network:
+- Network presets are defined in [`values.yaml`](https://github.com/stellar/helm-charts/blob/main/charts/soroban-rpc/values.yaml), which currently sets network configuration specific to `futurenet`. You can override this default and use other "canned" `values.yaml` files which have been published for other networks. For example, there is a [`values-testnet.yaml`](https://github.com/stellar/helm-charts/blob/main/charts/soroban-rpc/values-testnet.yaml) file to configure the deployment of the RPC server with the `testnet` network. Include this `--values` parameter in your `helm install` to specify the desired network:
 
 ```bash
---values https://raw.githubusercontent.com/stellar/helm-charts/main/charts/stellar-rpc/values-testnet.yaml
+--values https://raw.githubusercontent.com/stellar/helm-charts/main/charts/soroban-rpc/values-testnet.yaml
 ```
 
-- Configuring RPC to use other custom networks can be accomplished by downloading the [`values.yaml`](https://github.com/stellar/helm-charts/blob/main/charts/stellar-rpc/values.yaml) locally and updating settings under `sorobanRpc.sorobanRpcConfig` and `sorobanRpc.coreConfig`. This is applicable when connecting to specific networks other than the existing files like `values.yaml` available, such as your own standalone network. Include the local `values.yaml` in `helm install`:
+- Configuring RPC to use other custom networks can be accomplished by downloading the [`values.yaml`](https://github.com/stellar/helm-charts/blob/main/charts/soroban-rpc/values.yaml) locally and updating settings under `sorobanRpc.sorobanRpcConfig` and `sorobanRpc.coreConfig`. This is applicable when connecting to specific networks other than the existing files like `values.yaml` available, such as your own standalone network. Include the local `values.yaml` in `helm install`:
 
 ```bash
 --values my-custom-values.yaml
@@ -227,7 +227,7 @@ By default, this is disabled (`sorobanRpc.persistence.enabled=false`) and the RP
 Even if you're not deploying Stellar RPC using Kubernetes, the manifests generated by the charts may still be a good reference for showing how to configure and run Stellar RPC as a docker container. Just run the `helm template` command to print the container configuration to screen:
 
 ```bash
-helm template my-rpc stellar/stellar-rpc
+helm template my-rpc stellar/soroban-rpc
 ```
 
 ### Docker Image
@@ -240,12 +240,12 @@ Although we have a [Quickstart Image](https://github.com/stellar/quickstart), it
 
 :::
 
-Here's how to run the [stellar-rpc docker image](https://hub.docker.com/r/stellar/stellar-rpc):
+Here's how to run the [stellar-rpc docker image](https://hub.docker.com/r/stellar/soroban-rpc):
 
-1. Pull the image at the version you'd like to run from [the tags](https://hub.docker.com/r/stellar/stellar-rpc/tags):
+1. Pull the image at the version you'd like to run from [the tags](https://hub.docker.com/r/stellar/soroban-rpc/tags):
 
 ```bash
-docker pull stellar/stellar-rpc
+docker pull stellar/soroban-rpc
 ```
 
 2. Create a configuration file for [Stellar Core](https://github.com/stellar/stellar-core). Here is a sample configuration file for Testnet:
@@ -289,12 +289,12 @@ HISTORY="curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_003/{
 
 ```bash
 docker run -p 8001:8001 -p 8000:8000 \
--v <STELLAR_CORE_CONFIG_FOLDER>:/config stellar/stellar-rpc \
+-v <STELLAR_CORE_CONFIG_FOLDER>:/config stellar/soroban-rpc \
 --captive-core-config-path="/config/<STELLAR_CORE_CONFIG_PATH>" \
 --captive-core-storage-path="/var/lib/stellar/captive-core" \
 --captive-core-use-db=true \
 --stellar-core-binary-path="/usr/bin/stellar-core" \
---db-path="/var/lib/stellar/stellar-rpc-db.sqlite" \
+--db-path="/var/lib/stellar/soroban-rpc-db.sqlite" \
 --stellar-captive-core-http-port=11626 \
 --friendbot-url="https://friendbot-testnet.stellar.org/" \
 --network-passphrase="Test SDF Network ; September 2015" \
@@ -305,18 +305,18 @@ docker run -p 8001:8001 -p 8000:8000 \
 
 #### Configuration
 
-For production, we recommend running Stellar RPC with a [TOML](https://toml.io/en/) configuration file rather than CLI flags. This is similar to creating a configuration file for Stellar-Core as we did previously. For example, using [our docker image](https://hub.docker.com/r/stellar/stellar-rpc):
+For production, we recommend running Stellar RPC with a [TOML](https://toml.io/en/) configuration file rather than CLI flags. This is similar to creating a configuration file for Stellar-Core as we did previously. For example, using [our docker image](https://hub.docker.com/r/stellar/soroban-rpc):
 
 ```bash
 docker run -p 8001:8001 -p 8000:8000 \
--v <CONFIG_FOLDER>:/config stellar/stellar-rpc \
+-v <CONFIG_FOLDER>:/config stellar/soroban-rpc \
 --config-path <RPC_CONFIG_FILENAME>
 ```
 
 You can use Stellar RPC itself to generate a starter configuration file:
 
 ```bash
-docker run stellar/stellar-rpc gen-config-file > stellar-rpc-config.toml
+docker run stellar/soroban-rpc gen-config-file > stellar-rpc-config.toml
 ```
 
 The resulting configuration should look like this:
@@ -494,7 +494,7 @@ Note that the above generated configuration contains the default values and you 
 
 ### Build From Source
 
-Instructions for building Stellar RPC from source can be found [here](https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/README.md).
+Instructions for building Stellar RPC from source can be found [here](https://github.com/stellar/soroban-rpc/blob/main/cmd/soroban-rpc/README.md).
 
 ## Use the RPC Instance
 

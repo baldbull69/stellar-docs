@@ -35,7 +35,7 @@ The RPC provides the data availability services needed for most real-time use ca
 
 Since the RPC does not contain the full, holistic history of the network, you should use Hubble for more complex data analysis over longer periods of time.
 
-If the RPC does not otherwise serve your needs, please tell us why in the [Stellar Developer Discord](https://discord.gg/stellardev) or file an issue in the [RPC repo](https://github.com/stellar/stellar-rpc).
+If the RPC does not otherwise serve your needs, please tell us why in the [Stellar Developer Discord](https://discord.gg/stellardev) or file an issue in the [RPC repo](https://github.com/stellar/soroban-rpc).
 
 You have the option of [setting up your own RPC instance](./rpc/admin-guide.mdx) or using a publicly available service from [an infrastructure provider](./rpc/rpc-providers.mdx).
 
@@ -67,6 +67,6 @@ The [Hubble documentation](./hubble/README.mdx) focuses on exploratory data anal
 
 Horizon is an API for accessing and interacting with the Stellar network data. It does not store smart contract data. Horizon does, however, have a limited view of the Stellar Asset Contract (SAC) and smart contract operation types (i.e., it ingests transactions with invokeHostFunction operations and asset-related operations, whether they’re made through an asset’s SAC or using the built-in transaction operations).
 
-Horizon stores three types of data (current state, historical state, and derived state) in one database, and the data is available in real-time for transactional use, which makes Horizon more expensive and resource-intensive to operate. If you’re considering using Horizon over the RPC, let us know in the [Stellar Developer Discord](https://discord.gg/stellardev) or file an issue in the [RPC repo](https://github.com/stellar/stellar-rpc) and let us know why!
+Horizon stores three types of data (current state, historical state, and derived state) in one database, and the data is available in real-time for transactional use, which makes Horizon more expensive and resource-intensive to operate. If you’re considering using Horizon over the RPC, let us know in the [Stellar Developer Discord](https://discord.gg/stellardev) or file an issue in the [RPC repo](https://github.com/stellar/soroban-rpc) and let us know why!
 
 You can [run your own instance of Horizon](./horizon/admin-guide/README.mdx) or use one of the publicly available Horizon services from [these infrastructure providers](./horizon/horizon-providers.mdx).
