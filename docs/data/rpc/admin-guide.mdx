@@ -41,7 +41,7 @@ docker run --rm -it \
     --name stellar \
     stellar/quickstart:testing \
     --standalone \
-    --enable-stellar-rpc
+    --enable-soroban-rpc
 ```
 
 Once the image is started, you can check its status by querying the Horizon API:
@@ -105,7 +105,7 @@ docker run --rm -it \
     --name stellar \
     stellar/quickstart:testing \
     --testnet \
-    --enable-stellar-rpc
+    --enable-soroban-rpc
 ```
 
 And you'll want to configure it for use with the `--network` flag in Stellar CLI:
@@ -130,7 +130,7 @@ docker run --rm -it \
     --name stellar \
     stellar/quickstart:soroban-dev \
     --futurenet \
-    --enable-stellar-rpc
+    --enable-soroban-rpc
 ```
 
 And you'll want to configure it for use with the `--network` flag in Stellar CLI:
