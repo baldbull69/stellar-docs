@@ -194,6 +194,12 @@ const sidebar: SidebarsConfig = {
         },
         {
           type: "doc",
+          id: "api-reference/get-all-countries",
+          label: "Get All Countries",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
           id: "api-reference/get-all-assets",
           label: "Get All Assets",
           className: "api-method get",
@@ -215,12 +221,6 @@ const sidebar: SidebarsConfig = {
           id: "api-reference/get-all-wallets",
           label: "Get All Wallets",
           className: "api-method get",
-        },
-        {
-          type: "doc",
-          id: "api-reference/update-wallet",
-          label: "Update Wallet",
-          className: "api-method patch",
         },
       ],
     },
@@ -290,7 +290,7 @@ const sidebar: SidebarsConfig = {
         },
         {
           type: "doc",
-          id: "api-reference/update-receiver",
+          id: "api-reference/update-a-receiver",
           label: "Update a Receiver",
           className: "api-method patch",
         },
@@ -406,24 +406,6 @@ const sidebar: SidebarsConfig = {
           type: "doc",
           id: "api-reference/update-user-role",
           label: "Update User Role",
-          className: "api-method patch",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Wallets",
-      items: [
-        {
-          type: "doc",
-          id: "api-reference/get-all-wallets",
-          label: "Get All Wallets",
-          className: "api-method get",
-        },
-        {
-          type: "doc",
-          id: "api-reference/update-wallet",
-          label: "Update Wallet",
           className: "api-method patch",
         },
       ],
