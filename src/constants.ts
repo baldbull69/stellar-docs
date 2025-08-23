@@ -4,6 +4,7 @@ export const CODE_LANGS = {
   curl: 'cURL',
   dart: 'Flutter',
   flutter: 'Flutter',
+  swift: 'Swift',
   docker: 'Dockerfile',
   go: 'Go',
   html: 'html',
@@ -24,10 +25,4 @@ export const CODE_LANGS = {
   tsx: 'TSX',
   typescript: 'TypeScript',
   yaml: 'YAML',
-};
-
-export const FUTURENET_DETAILS = {
-  network: "FUTURENET",
-  networkUrl: "https://horizon-futurenet.stellar.org",
-  networkPassphrase: "Test SDF Future Network ; October 2022",
 };

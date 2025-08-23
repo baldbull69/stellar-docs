@@ -23,7 +23,9 @@ import { getPlatform } from "@site/src/helpers/getPlatform";
 
 The [cross contract call example] demonstrates how to call a contract from another contract.
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)][oigp]
+[![Open in Codespaces](https://github.com/codespaces/badge.svg)][open-in-github-codespaces]
+
+[![Open in Codeanywhere](https://codeanywhere.com/img/open-in-codeanywhere-btn.svg)][open-in-code-anywhere]
 
 :::info
 
@@ -31,25 +33,33 @@ In this example there are two contracts that are compiled separately, deployed s
 
 :::
 
-[oigp]: https://gitpod.io/#https://github.com/stellar/soroban-examples/tree/v21.6.0
-[cross contract call example]: https://github.com/stellar/soroban-examples/tree/v21.6.0/cross_contract
+[open-in-github-codespaces]: https://github.com/codespaces/new?repo=stellar/soroban-examples&editor=web
+[open-in-code-anywhere]: https://app.codeanywhere.com/#https://github.com/stellar/soroban-examples
+[cross contract call example]: https://github.com/stellar/soroban-examples/tree/v22.0.1/cross_contract
 
 ## Run the Example
 
-First go through the [Setup] process to get your development environment configured, then clone the `v21.6.0` tag of `soroban-examples` repository:
+First go through the [Setup] process to get your development environment configured, then clone the `v22.0.1` tag of `soroban-examples` repository:
 
 [setup]: ../getting-started/setup.mdx
 
 ```
-git clone -b v21.6.0 https://github.com/stellar/soroban-examples
+git clone -b v22.0.1 https://github.com/stellar/soroban-examples
 ```
 
-Or, skip the development environment setup and open this example in [Gitpod][oigp].
+Or, skip the development environment setup and open this example in [GitHub Codespaces][open-in-github-codespaces] or [Code Anywhere][open-in-code-anywhere].
 
-To run the tests for the example, navigate to the `cross_contract/contract_b` directory, and use `cargo test`.
+To run the tests for the example, first build Contract A (the contract to be called) and then run `cargo test` from Contract B's directory. Build Contract A by navigating to the `cross_contract/contract_a` directory and use the `stellar contract build` build command:
 
 ```
-cd cross_contract/contract_b
+cd cross_contract/contract_a
+stellar contract build
+```
+
+When Contract A has been built, navigate to the `cross_contract/contract_b` directory, and use `cargo test`.
+
+```
+cd ../contract_b
 cargo test
 ```
 
@@ -77,7 +87,7 @@ impl ContractA {
 ```rust title="cross_contract/contract_b/src/lib.rs"
 mod contract_a {
     soroban_sdk::contractimport!(
-        file = "../contract_a/target/wasm32-unknown-unknown/release/soroban_cross_contract_a_contract.wasm"
+        file = "../contract_a/target/wasm32v1-none/release/soroban_cross_contract_a_contract.wasm"
     );
 }
 
@@ -93,7 +103,7 @@ impl ContractB {
 }
 ```
 
-Ref: https://github.com/stellar/soroban-examples/tree/v21.6.0/cross_contract
+Ref: https://github.com/stellar/soroban-examples/tree/v22.0.1/cross_contract
 
 ## How it Works
 
@@ -147,7 +157,7 @@ The client is used to execute the `add` function with the `x` and `y` parameters
 ```rust title="cross_contract_calls/src/a.rs"
 mod contract_a {
     soroban_sdk::contractimport!(
-        file = "../contract_a/target/wasm32-unknown-unknown/release/soroban_cross_contract_a_contract.wasm"
+        file = "../contract_a/target/wasm32v1-none/release/soroban_cross_contract_a_contract.wasm"
     );
 }
 
@@ -172,11 +182,11 @@ Open the `cross_contract/contract_b/src/test.rs` file to follow along.
 fn test() {
     let env = Env::default();
 
-    // Register contract A using the imported Wasm.
-    let contract_a_id = env.register_contract_wasm(None, contract_a::Wasm);
+    // Register contract A using the imported WASM.
+    let contract_a_id = env.register(contract_a::WASM, ());
 
     // Register contract B defined in this crate.
-    let contract_b_id = env.register_contract(None, ContractB);
+    let contract_b_id = env.register(ContractB, ());
 
     // Create a client for calling contract B.
     let client = ContractBClient::new(&env, &contract_b_id);
@@ -196,13 +206,13 @@ let env = Env::default();
 Contract A is registered with the environment using the imported Wasm.
 
 ```rust
-let contract_a_id = env.register_contract_wasm(None, contract_a::Wasm);
+let contract_a_id = env.register(contract_a::WASM, ());
 ```
 
-Contract B is registered with the environment using the contract type.
+Contract B is registered with the environment using the contract type and the contract instance is compiled into the Rust binary.
 
 ```rust
-let contract_b_id = env.register_contract(None, ContractB);
+let contract_b_id = env.register(ContractB, ());
 ```
 
 All public functions within an `impl` block that is annotated with the `#[contractimpl]` attribute have a corresponding function generated in a generated client type. The client type will be named the same as the contract type with `Client` appended. For example, in our contract the contract type is `ContractB`, and the client is named `ContractBClient`. The client can be constructed and used in the same way that client generated for Contract A can be.
@@ -234,11 +244,11 @@ stellar contract build
 Both `.wasm` files should be found in both contract `target` directories after building both contracts:
 
 ```
-target/wasm32-unknown-unknown/release/soroban_cross_contract_a_contract.wasm
+target/wasm32v1-none/release/soroban_cross_contract_a_contract.wasm
 ```
 
 ```
-target/wasm32-unknown-unknown/release/soroban_cross_contract_b_contract.wasm
+target/wasm32v1-none/release/soroban_cross_contract_b_contract.wasm
 ```
 
 ## Run the Contract
@@ -251,13 +261,13 @@ If you have [`stellar-cli`] installed, you can invoke contract functions. Both c
 
 ```sh
 stellar contract deploy \
-    --wasm target/wasm32-unknown-unknown/release/soroban_cross_contract_a_contract.wasm \
+    --wasm target/wasm32v1-none/release/soroban_cross_contract_a_contract.wasm \
     --id a
 ```
 
 ```sh
 stellar contract deploy \
-    --wasm target/wasm32-unknown-unknown/release/soroban_cross_contract_b_contract.wasm \
+    --wasm target/wasm32v1-none/release/soroban_cross_contract_b_contract.wasm \
     --id b
 ```
 
@@ -267,13 +277,13 @@ stellar contract deploy \
 
 ```powershell
 stellar contract deploy `
-    --wasm target/wasm32-unknown-unknown/release/soroban_cross_contract_a_contract.wasm `
+    --wasm target/wasm32v1-none/release/soroban_cross_contract_a_contract.wasm `
     --id a
 ```
 
 ```powershell
 stellar contract deploy `
-    --wasm target/wasm32-unknown-unknown/release/soroban_cross_contract_b_contract.wasm `
+    --wasm target/wasm32v1-none/release/soroban_cross_contract_b_contract.wasm `
     --id b
 ```
 

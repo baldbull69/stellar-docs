@@ -28,4 +28,10 @@ yarn-error.log*
 # non-production openrpc.json files
 /openrpc/*openrpc.json
 
+# Environment variables
+.env
+
 stellar-cli-repo
+
+docs.log
+run.pid

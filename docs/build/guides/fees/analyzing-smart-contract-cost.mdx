@@ -530,11 +530,11 @@ To optimize the size of your `wasm` binary, you can:
 
 ### 1. Use of built-in tools
 
-One way to optimize the size of your `wasm` binary is to use the `soroban optimize` command. This command comes from the [Soroban CLI](https://www.google.com) will optimize the size of your `wasm` binary by removing unnecessary code and reducing the size of the binary.
+One way to optimize the size of your `wasm` binary is to use the `soroban optimize` command. This command comes from the [Stellar CLI](../../../tools/cli/stellar-cli.mdx) will optimize the size of your `wasm` binary by removing unnecessary code and reducing the size of the binary.
 
 ```bash
 stellar contract optimize \
-  --wasm target/wasm32-unknown-unknown/release/project.wasm
+  --wasm target/wasm32v1-none/release/project.wasm
 ```
 
 Another way to optimize your smart contract is to use the `stellar contract invoke` command with the `--cost` and `--sim-only` flags. This command will provide you with a detailed breakdown of the cost of running your smart contract on the Stellar network.
@@ -542,7 +542,7 @@ Another way to optimize your smart contract is to use the `stellar contract invo
 ```bash
 stellar contract invoke \
   --id CC6MWZMG2JPQEENRL7XVICAY5RNMHJ2OORMUHXKRDID6MNGXSSOJZLLF \
-  --source alice \
+  --source-account alice \
   --network testnet \
   --cost \
   --sim-only \
@@ -550,7 +550,7 @@ stellar contract invoke \
   increment
 ```
 
-Reference: https://sorobandev.com/guides/soroban-cli
+Reference: [Stellar CLI Guides](../cli/README.mdx).
 
 ### 2. Manual code review
 
@@ -560,7 +560,7 @@ Perform a manual code review of your smart contract to identify areas where you 
 
 Use unit tests to measure the gas cost of your smart contract functions. This will help you identify functions that are consuming a lot of gas and optimize them accordingly.
 
-Also, using [simulateTransaction](/docs/data/rpc/api-reference/methods/simulateTransaction) rpc helper method can give you an insight of the gas cost of your contract functions.
+Also, using [simulateTransaction](/docs/data/apis/rpc/api-reference/methods/simulateTransaction) rpc helper method can give you an insight of the gas cost of your contract functions.
 
 ### 4. Static analysis tools
 

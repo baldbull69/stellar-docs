@@ -25,23 +25,26 @@ The [auth example] demonstrates how to implement authentication and authorizatio
 
 This example is an extension of the [storing data example].
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)][oigp]
+[![Open in Codespaces](https://github.com/codespaces/badge.svg)][open-in-github-codespaces]
 
-[oigp]: https://gitpod.io/#https://github.com/stellar/soroban-examples/tree/v21.6.0
+[![Open in Codeanywhere](https://codeanywhere.com/img/open-in-codeanywhere-btn.svg)][open-in-code-anywhere]
+
+[open-in-github-codespaces]: https://github.com/codespaces/new?repo=stellar/soroban-examples&editor=web
+[open-in-code-anywhere]: https://app.codeanywhere.com/#https://github.com/stellar/soroban-examples
 [storing data example]: ../getting-started/storing-data.mdx
-[auth example]: https://github.com/stellar/soroban-examples/tree/v21.6.0/auth
+[auth example]: https://github.com/stellar/soroban-examples/tree/v22.0.1/auth
 
 ## Run the Example
 
-First go through the [Setup] process to get your development environment configured, then clone the `v21.6.0` tag of `soroban-examples` repository:
+First go through the [Setup] process to get your development environment configured, then clone the `v22.0.1` tag of `soroban-examples` repository:
 
 [setup]: ../getting-started/setup.mdx
 
 ```
-git clone -b v21.6.0 https://github.com/stellar/soroban-examples
+git clone -b v22.0.1 https://github.com/stellar/soroban-examples
 ```
 
-Or, skip the development environment setup and open this example in [Gitpod][oigp].
+Or, skip the development environment setup and open this example in [GitHub Codespaces][open-in-github-codespaces] or [Code Anywhere][open-in-code-anywhere].
 
 To run the tests for the example, navigate to the `auth` directory, and use `cargo test`.
 
@@ -110,7 +113,7 @@ impl IncrementContract {
 }
 ```
 
-Ref: https://github.com/stellar/soroban-examples/tree/v21.6.0/auth
+Ref: https://github.com/stellar/soroban-examples/tree/v22.0.1/auth
 
 ## How it Works
 
@@ -166,14 +169,14 @@ user.require_auth_for_args((value,).into_val(&env));
 
 Open the [`auth/src/test.rs`] file to follow along.
 
-[`auth/src/test.rs`]: https://github.com/stellar/soroban-examples/tree/v21.6.0/auth/src/test.rs
+[`auth/src/test.rs`]: https://github.com/stellar/soroban-examples/tree/v22.0.1/auth/src/test.rs
 
 ```rust title="auth/src/test.rs"
 fn test() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, IncrementContract);
+    let contract_id = env.register(IncrementContract, {});
     let client = IncrementContractClient::new(&env, &contract_id);
 
     let user_1 = Address::random(&env);
@@ -222,7 +225,7 @@ env.mock_all_auths();
 The contract is registered with the environment using the contract type.
 
 ```rust
-let contract_id = env.register_contract(None, IncrementContract);
+let contract_id = env.register(IncrementContract, {});
 ```
 
 All public functions within an `impl` block that is annotated with the `#[contractimpl]` attribute have a corresponding function generated in a generated client type. The client type will be named the same as the contract type with `Client` appended. For example, in our contract the contract type is `IncrementContract`, and the client is named `IncrementContractClient`.
@@ -282,7 +285,7 @@ stellar contract build
 The `.wasm` file should be found in the `target` directory after building:
 
 ```
-target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm
+target/wasm32v1-none/release/soroban_auth_contract.wasm
 ```
 
 ## Run the Contract
@@ -305,7 +308,7 @@ GA6S566FD3EQDUNQ4IGSLXKW3TGVSTQW3TPHPGS7NWMCEIPBOKTNCSRU
 GAJGHZ44IJXYFNOVRZGBCVKC2V62DB2KHZB7BEMYOWOLFQH4XP2TAM6B
 ```
 
-Now the contract itself can be invoked. Notice the `--source` must be the identity name matching the address passed to the `--user` argument. This allows `Stellar CLI` to automatically sign the necessary payload for the invocation.
+Now the contract itself can be invoked. Notice the `--source-account` must be the identity name matching the address passed to the `--user` argument. This allows `Stellar CLI` to automatically sign the necessary payload for the invocation.
 
 <Tabs groupId="platform" defaultValue={getPlatform()}>
 
@@ -313,8 +316,8 @@ Now the contract itself can be invoked. Notice the `--source` must be the identi
 
 ```sh
 stellar contract invoke \
-    --source acc1 \
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
+    --source-account acc1 \
+    --wasm target/wasm32v1-none/release/soroban_auth_contract.wasm \
     --id 1 \
     -- \
     increment \
@@ -328,8 +331,8 @@ stellar contract invoke \
 
 ```powershell
 stellar contract invoke `
-    --source acc1 `
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm `
+    --source-account acc1 `
+    --wasm target/wasm32v1-none/release/soroban_auth_contract.wasm `
     --id 1 `
     -- `
     increment `
@@ -349,8 +352,8 @@ Run a few more increments for both accounts.
 
 ```sh
 stellar contract invoke \
-    --source acc2 \
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
+    --source-account acc2 \
+    --wasm target/wasm32v1-none/release/soroban_auth_contract.wasm \
     --id 1 \
     -- \
     increment \
@@ -360,8 +363,8 @@ stellar contract invoke \
 
 ```sh
 stellar contract invoke \
-    --source acc1 \
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
+    --source-account acc1 \
+    --wasm target/wasm32v1-none/release/soroban_auth_contract.wasm \
     --id 1 \
     -- \
     increment \
@@ -371,8 +374,8 @@ stellar contract invoke \
 
 ```sh
 stellar contract invoke \
-    --source acc2 \
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
+    --source-account acc2 \
+    --wasm target/wasm32v1-none/release/soroban_auth_contract.wasm \
     --id 1 \
     -- \
     increment \
@@ -386,8 +389,8 @@ stellar contract invoke \
 
 ```powershell
 stellar contract invoke \
-    --source acc2 \
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
+    --source-account acc2 \
+    --wasm target/wasm32v1-none/release/soroban_auth_contract.wasm \
     --id 1 \
     -- \
     increment \
@@ -397,8 +400,8 @@ stellar contract invoke \
 
 ```powershell
 stellar contract invoke \
-    --source acc1 \
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
+    --source-account acc1 \
+    --wasm target/wasm32v1-none/release/soroban_auth_contract.wasm \
     --id 1 \
     -- \
     increment \
@@ -408,8 +411,8 @@ stellar contract invoke \
 
 ```powershell
 stellar contract invoke \
-    --source acc2 \
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
+    --source-account acc2 \
+    --wasm target/wasm32v1-none/release/soroban_auth_contract.wasm \
     --id 1 \
     -- \
     increment \
@@ -440,9 +443,9 @@ It is also possible to preview the authorization payload that is being signed by
 
 ```sh
 stellar contract invoke \
-    --source acc2 \
+    --source-account acc2 \
     --auth \
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm \
+    --wasm target/wasm32v1-none/release/soroban_auth_contract.wasm \
     --id 1 \
     -- \
     increment \
@@ -456,9 +459,9 @@ stellar contract invoke \
 
 ```powershell
 stellar contract invoke `
-    --source acc2 `
+    --source-account acc2 `
     --auth `
-    --wasm target/wasm32-unknown-unknown/release/soroban_auth_contract.wasm `
+    --wasm target/wasm32v1-none/release/soroban_auth_contract.wasm `
     --id 1 `
     -- `
     increment `
@@ -478,7 +481,7 @@ Contract auth: [{"address_with_nonce":null,"root_invocation":{"contract_id":"000
 
 ## Further reading
 
-[Authorization documentation](../../../learn/encyclopedia/security/authorization.mdx) provides more details on how Soroban auth framework works.
+[Authorization documentation](../../../learn/fundamentals/contract-development/authorization.mdx) provides more details on how Soroban auth framework works.
 
 [Timelock](../example-contracts/timelock.mdx) and [Single Offer](../example-contracts/single-offer-sale.mdx) examples demonstrate authorizing token operations on behalf of the user, which can be extended to any nested contract invocations.
 

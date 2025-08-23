@@ -23,7 +23,7 @@ Stellar Core is designed to run on relatively modest hardware so that a whole ra
 
 _\* Assuming a 30-day retention window for data storage._
 
-## Network Access
+## Stellar Network Access
 
 Stellar Core interacts with the peer-to-peer network to keep a distributed ledger in sync, which means that your node needs to make certain [TCP ports](https://en.wikipedia.org/wiki/Transmission_Control_Protocol#TCP_ports) available for inbound and outbound communication.
 
@@ -83,6 +83,16 @@ If you're using PostgreSQL, we recommend you configure your local database to be
 Stellar-core stores ledger state in the form of flat XDR files called "buckets." The bucket files are used for hashing and transmission of ledger differences to history archives. If BucketListDB is used, the `buckets` directory is also used as a primary database backend. If SQL is used, the `buckets` directory is only used for hashing and history archives, and simply represents a copy of the ledger state stored in SQL.
 
 Buckets should be stored on a fast, local disk with sufficient space to store several times the size of the current ledger. Current ledger size is approximately 10 GB (as of April 2024), so please plan accordingly.
+
+## Kubernetes considerations
+
+We currently do not recommend running validator nodes in Kubernetes. If you choose to do so, consider the following:
+
+- Sensitive data such as node seeds will be stored in Kubernetes etcd. Consider consuming credentials using tools like [vault agent](https://developer.hashicorp.com/vault/docs/platform/k8s/injector) or the [AWS Secrets Store CSI driver](https://github.com/aws/secrets-store-csi-driver-provider-aws) to improve security
+- Consider how external traffic will reach the pods. Tier 1 nodes need public DNS names and necessary ports must be accessible from the internet
+- Validators have unique seeds and history archive configurations, so each pod will require its own specific configuration
+- Ensure that sufficient resources are always available to the pods
+- Depending on how history archives are published, you may need to fork docker images to include extra tooling
 
 [configure]: ./configuring.mdx
 [c5d.2xlarge]: https://aws.amazon.com/ec2/instance-types/c5/

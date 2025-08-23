@@ -54,34 +54,48 @@ Now you're ready to enable hosted deposits and withdrawals via the SEP-24 API. S
 
 ```yaml
 # dev.assets.yaml
-assets:
-  - schema: stellar
-    code: USDC
-    issuer: GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5
+items:
+  - id: stellar:USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5
     distribution_account: GBLSAHONJRODSFTLOV225NZR4LHICH63RIFQTQN37L5CRTR2IMQ5UEK7
     significant_decimals: 2
-    sep24_enabled: true
-    deposit:
+    sep24:
       enabled: true
-    withdraw:
-      enabled: true
-  - schema: iso4217
-    code: USD
+      deposit:
+        enabled: true
+        min_amount: 0
+        max_amount: 10
+        methods:
+          - SEPA
+          - SWIFT
+      withdraw:
+        enabled: true
+        min_amount: 0
+        max_amount: 10
+        methods:
+          - bank_account
+          - cash
+  - id: iso4217:USD
     significant_decimals: 2
-    deposit:
-      enabled: true
-    withdraw:
-      enabled: true
   # Optional support for XLM
-  - schema: stellar
-    code: native
+  - id: stellar:native
     distribution_account: GBLSAHONJRODSFTLOV225NZR4LHICH63RIFQTQN37L5CRTR2IMQ5UEK7
     significant_decimals: 7
-    sep24_enabled: true
-    deposit:
+    sep24:
       enabled: true
-    withdraw:
-      enabled: true
+      deposit:
+        enabled: true
+        min_amount: 0
+        max_amount: 10
+        methods:
+          - SEPA
+          - SWIFT
+      withdraw:
+        enabled: true
+        min_amount: 0
+        max_amount: 10
+        methods:
+          - bank_account
+          - cash
 ```
 
 </CodeExample>
@@ -190,7 +204,7 @@ The demo wallet should be able to find your `stellar.toml` file, authenticate us
 [aurora-postgresql]: https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.AuroraPostgreSQL.html
 [h2]: https://www.h2database.com/html/main.html
 [sqlite]: https://www.sqlite.org/index.html
-[flyway]: https://documentation.red-gate.com/fd/welcome-to-flyway-184127914.html
+[flyway]: https://documentation.red-gate.com/fd/redgate-flyway-documentation-138346877.html
 [sep-24-ref-ui]: https://github.com/stellar/sep24-reference-ui
 [sep-24-ref]: https://github.com/stellar/java-stellar-anchor-sdk/tree/develop/kotlin-reference-server
 [sep1-ap]: ../sep1/README.mdx
